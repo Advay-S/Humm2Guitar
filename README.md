@@ -77,8 +77,3 @@ hum2guitar/
 - Hum simple melodies
 - Keep humming for most of the 10 seconds
 - Ensure microphone permissions are enabled
-
-## License
-
-MIT License
-
