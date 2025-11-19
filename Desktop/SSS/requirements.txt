@@ -1,0 +1,6 @@
+pyaudio
+librosa
+crepe
+tensorflow
+pretty_midi
+numpy

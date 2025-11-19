@@ -1,0 +1,19 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Audio/MIDI files (generated outputs)
+*.wav
+*.mid
+
+# SoundFont (too large for GitHub)
+*.sf2
+
+# macOS
+.DS_Store
