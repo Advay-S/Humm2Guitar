@@ -29,14 +29,12 @@ def extract_melody(audio_file):
                 duration = timez - start_time
                 notes.append({
                     'midi_note':  current_note,
-
                     'start_duration': start_time, 
-
                     'duration': duration, 
                     'note_name': librosa.midi_to_note(current_note)
                 })
-        current_note = note 
-        start_time = timez 
+            current_note = note 
+            start_time = timez 
 
     if current_note is not None: 
         notes.append({
@@ -46,17 +44,31 @@ def extract_melody(audio_file):
                     'note_name': librosa.midi_to_note(current_note)
                 })
     
-    # Filter out very short notes
-    MIN_NOTE_DURATION = 0.02  # Lowered from 0.05 to 0.02 (20ms)
-    filtered_notes = [n for n in notes if n['duration'] >= MIN_NOTE_DURATION]
+    # Filter out very short notes and merge similar adjacent notes
+    MIN_NOTE_DURATION = 0.1  # Minimum 100ms notes
+    filtered_notes = []
+    
+    for note in notes:
+        if note['duration'] >= MIN_NOTE_DURATION:
+            # Merge with previous note if same pitch and close in time
+            if filtered_notes and filtered_notes[-1]['midi_note'] == note['midi_note']:
+                # Check if gap is small (less than 0.05s)
+                gap = note['start_duration'] - (filtered_notes[-1]['start_duration'] + filtered_notes[-1]['duration'])
+                if gap < 0.05:
+                    # Merge: extend previous note's duration
+                    filtered_notes[-1]['duration'] = (note['start_duration'] + note['duration']) - filtered_notes[-1]['start_duration']
+                else:
+                    filtered_notes.append(note)
+            else:
+                filtered_notes.append(note)
     
     print(f"Filtered: {len(notes)} → {len(filtered_notes)} notes (removed notes < {MIN_NOTE_DURATION}s)")
     
     # If still no notes, show warning but return what we have
     if len(filtered_notes) == 0:
-        print("WARNING: No notes after filtering! Using top 50 longest notes instead...")
-        # Sort by duration and take top 50
-        sorted_notes = sorted(notes, key=lambda x: x['duration'], reverse=True)[:50]
+        print("WARNING: No notes after filtering! Using top 30 longest notes instead...")
+        # Sort by duration and take top 30
+        sorted_notes = sorted(notes, key=lambda x: x['duration'], reverse=True)[:30]
         return sorted_notes
     
     return filtered_notes        

@@ -1,6 +1,6 @@
 # Humming to Guitar Converter 🎸
 
-Convert your humming into guitar music using AI!
+Convert your humming into guitar music!
 
 ## Features
 - Records 10 seconds of audio

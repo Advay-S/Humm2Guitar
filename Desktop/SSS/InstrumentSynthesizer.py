@@ -24,7 +24,7 @@ def synthesize_music(output_file, soundfont='FluidR3_GM.sf2'):
      return
 
  pmObj = pretty_midi.PrettyMIDI()
- guitar_program = pretty_midi.instrument_name_to_program('Guitar')
+ guitar_program = pretty_midi.instrument_name_to_program('Acoustic Guitar (nylon)')
  guitar = pretty_midi.Instrument(program=guitar_program)
 
  for note_name in notes: 
